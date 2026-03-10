@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Task Dashboard</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='style.css') }}"
+        />
+    </head>
+    <body>
+        <div class="page-layout">
+            <aside class="sidebar">
+                <h2>Filters</h2>
+
+                <form method="GET" action="{{ url_for('dashboard') }}">
+                    <label for="priority">Priority</label>
+                    <select name="priority" id="priority">
+                        <option value="" {% if selected_priority == "" %}selected{% endif %}>
+                            All
+                        </option>
+                        <option value="High" {% if selected_priority == "High" %}selected{% endif %}>
+                            High
+                        </option>
+                        <option value="Medium" {% if selected_priority == "Medium" %}selected{% endif %}>
+                            Medium
+                        </option>
+                        <option value="Low" {% if selected_priority == "Low" %}selected{% endif %}>
+                            Low
+                        </option>
+                    </select>
+
+                    <label for="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="" {% if selected_status == "" %}selected{% endif %}>
+                            All
+                        </option>
+                        <option value="Not Started" {% if selected_status == "Not Started" %}selected{% endif %}>
+                            Not Started
+                        </option>
+                        <option value="In Progress" {% if selected_status == "In Progress" %}selected{% endif %}>
+                            In Progress
+                        </option>
+                        <option value="Completed" {% if selected_status == "Completed" %}selected{% endif %}>
+                            Completed
+                        </option>
+                    </select>
+
+                    <button type="submit">Apply Filters</button>
+                    <a class="clear-link" href="{{ url_for('dashboard') }}">Clear Filters</a>
+                </form>
+            </aside>
+
+            <main class="main-content">
+                <div class="dashboard-header">
+                    <h1>Task Dashboard</h1>
+                    <a class="new-task-button" href="{{ url_for('new_task') }}">
+                        New Task
+                    </a>
+                </div>
+
+                <div class="table-card">
+                    <table>
+                        <tr>
+                            <th>Task</th>
+                            <th>Due</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Assigned</th>
+                        </tr>
+
+                        {% for task in tasks %}
+                        <tr class="clickable-row" data-href="{{ url_for('view_task', task_id=task.id) }}">
+                            <td>{{ task.title }}</td>
+                            <td>{{ task.due }}</td>
+                            <td>
+                                <span class="priority-badge priority-{{ task.priority|lower }}">
+                                    {{ task.priority }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge status-{{ task.status|lower|replace(' ', '-') }}">
+                                    {{ task.status }}
+                                </span>
+                            </td>
+                            <td>{{ task.assigned }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+
+                    {% if not tasks %}
+                    <p class="info-text">No tasks match the current filters.</p>
+                    {% endif %}
+                </div>
+
+            </main>
+        </div>
+    </body>
+</html>
+
+
+<script>
+document.querySelectorAll(".clickable-row").forEach(row => {
+    row.addEventListener("click", () => {
+        window.location = row.dataset.href;
+    });
+});
+</script>

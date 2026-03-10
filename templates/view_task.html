@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-page">
+    <div class="form-card">
+        <h1>Task Details</h1>
+
+        <p><strong>Title:</strong> {{ task.title }}</p>
+        <p><strong>Description:</strong></p>
+        <div class="description-box">{{ task.description }}</div>
+
+        <p><strong>Due Date:</strong> {{ task.due }}</p>
+        <p><strong>Priority:</strong> {{ task.priority }}</p>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Assigned To:</strong> {{ task.assigned }}</p>
+
+        <div class="form-buttons">
+            <a class="new-task-button" href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
+            <a class="cancel-button" href="{{ url_for('dashboard') }}">Back</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

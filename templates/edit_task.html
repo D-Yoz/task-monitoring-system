@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-page">
+    <div class="form-card">
+        <h1>Edit Task</h1>
+
+        <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+            <label for="title">Task Title</label>
+            <input type="text" id="title" name="title" value="{{ task.title }}" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5">{{ task.description }}</textarea>
+
+            <label for="due">Due Date</label>
+            <input type="date" id="due" name="due" value="{{ task.due }}" required>
+
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority" required>
+                <option value="High" {% if task.priority == "High" %}selected{% endif %}>High</option>
+                <option value="Medium" {% if task.priority == "Medium" %}selected{% endif %}>Medium</option>
+                <option value="Low" {% if task.priority == "Low" %}selected{% endif %}>Low</option>
+            </select>
+
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+                <option value="Not Started" {% if task.status == "Not Started" %}selected{% endif %}>Not Started</option>
+                <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Completed" {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+
+            <label for="assigned">Assigned To</label>
+            <input type="text" id="assigned" name="assigned" value="{{ task.assigned }}" required>
+
+            <div class="form-buttons">
+                <button type="submit" class="primary-button">Save</button>
+                <a class="cancel-button" href="{{ url_for('view_task', task_id=task.id) }}">Cancel</a>
+            </div>
+        </form>
+
+        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" style="margin-top: 10px;">
+            <button type="submit" class="delete-button">Delete</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

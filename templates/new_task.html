@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-page">
+    <div class="form-card">
+        <h1>Create New Task</h1>
+
+        <form method="POST" action="{{ url_for('new_task') }}">
+            <label for="title">Task Title</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5"></textarea>
+
+            <label for="due">Due Date</label>
+            <input type="date" id="due" name="due" required>
+
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority" required>
+                <option value="">Select priority</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+                <option value="">Select status</option>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <label for="assigned">Assigned To</label>
+            <input type="text" id="assigned" name="assigned" required>
+
+            <div class="form-buttons">
+                <button type="submit" class="primary-button">Create Task</button>
+                <a class="cancel-button" href="{{ url_for('dashboard') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
