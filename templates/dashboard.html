@@ -13,6 +13,22 @@
                 <h2>Filters</h2>
 
                 <form method="GET" action="{{ url_for('dashboard') }}">
+                    <label for="user">Viewing As</label>
+                    <select name="user" id="user">
+                        <option value="" {% if selected_user_id == "" %}selected{% endif %}>
+                            All / Team View
+                        </option>
+
+                        {% for user in users %}
+                        <option
+                            value="{{ user.id }}"
+                            {% if selected_user_id == user.id|string %}selected{% endif %}
+                        >
+                            {{ user.name }} ({{ user.role }})
+                        </option>
+                        {% endfor %}
+                    </select>
+
                     <label for="priority">Priority</label>
                     <select name="priority" id="priority">
                         <option value="" {% if selected_priority == "" %}selected{% endif %}>
@@ -57,7 +73,11 @@
                         New Task
                     </a>
                 </div>
-
+                {% if overdue_count > 0 %}
+                <div class="alert-banner">
+                    ⚠ {{ overdue_count }} overdue task{% if overdue_count != 1 %}s{% endif %} need attention.
+                </div>
+                {% endif %}
                 <div class="table-card">
                     <table>
                         <tr>
@@ -69,9 +89,14 @@
                         </tr>
 
                         {% for task in tasks %}
-                        <tr class="clickable-row" data-href="{{ url_for('view_task', task_id=task.id) }}">
+                        <tr class="clickable-row {% if task.is_overdue %}overdue-row{% endif %}" data-href="{{ url_for('view_task', task_id=task.id) }}">
                             <td>{{ task.title }}</td>
-                            <td>{{ task.due }}</td>
+                            <td>
+                                {{ task.due }}
+                                {% if task.is_overdue %}
+                                    <span class="overdue-badge">Overdue</span>
+                                {% endif %}
+                            </td>
                             <td>
                                 <span class="priority-badge priority-{{ task.priority|lower }}">
                                     {{ task.priority }}
@@ -91,17 +116,15 @@
                     <p class="info-text">No tasks match the current filters.</p>
                     {% endif %}
                 </div>
-
             </main>
         </div>
+
+        <script>
+            document.querySelectorAll(".clickable-row").forEach(row => {
+                row.addEventListener("click", () => {
+                    window.location = row.dataset.href;
+                });
+            });
+        </script>
     </body>
 </html>
-
-
-<script>
-document.querySelectorAll(".clickable-row").forEach(row => {
-    row.addEventListener("click", () => {
-        window.location = row.dataset.href;
-    });
-});
-</script>

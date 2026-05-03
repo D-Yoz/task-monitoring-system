@@ -35,7 +35,15 @@
             </select>
 
             <label for="assigned">Assigned To</label>
-            <input type="text" id="assigned" name="assigned" value="{{ task.assigned }}" required>
+            <select id="assigned" name="assigned" required>
+                <option value="">Select user</option>
+                {% for user in users %}
+                    <option value="{{ user.name }}"
+                        {% if user.name == task.assigned %}selected{% endif %}>
+                        {{ user.name }}
+                    </option>
+                {% endfor %}
+            </select>
 
             <div class="form-buttons">
                 <button type="submit" class="primary-button">Save</button>

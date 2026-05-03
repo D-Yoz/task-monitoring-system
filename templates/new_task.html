@@ -37,7 +37,12 @@
             </select>
 
             <label for="assigned">Assigned To</label>
-            <input type="text" id="assigned" name="assigned" required>
+            <select id="assigned" name="assigned" required>
+                <option value="">Select user</option>
+            {% for user in users %}
+                <option value="{{ user.name }}">{{ user.name }}</option>
+            {% endfor %}
+            </select>
 
             <div class="form-buttons">
                 <button type="submit" class="primary-button">Create Task</button>

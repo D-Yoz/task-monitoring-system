@@ -9,6 +9,12 @@
 <div class="form-page">
     <div class="form-card">
         <h1>Task Details</h1>
+        
+        {% if task.is_overdue %}
+        <div class="alert-banner">
+            ⚠ This task is overdue and requires attention.
+        </div>
+        {% endif %}
 
         <p><strong>Title:</strong> {{ task.title }}</p>
         <p><strong>Description:</strong></p>
