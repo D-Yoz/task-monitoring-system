@@ -13,22 +13,6 @@
                 <h2>Filters</h2>
 
                 <form method="GET" action="{{ url_for('dashboard') }}">
-                    <label for="user">Viewing As</label>
-                    <select name="user" id="user">
-                        <option value="" {% if selected_user_id == "" %}selected{% endif %}>
-                            All / Team View
-                        </option>
-
-                        {% for user in users %}
-                        <option
-                            value="{{ user.id }}"
-                            {% if selected_user_id == user.id|string %}selected{% endif %}
-                        >
-                            {{ user.name }} ({{ user.role }})
-                        </option>
-                        {% endfor %}
-                    </select>
-
                     <label for="priority">Priority</label>
                     <select name="priority" id="priority">
                         <option value="" {% if selected_priority == "" %}selected{% endif %}>
@@ -68,10 +52,21 @@
 
             <main class="main-content">
                 <div class="dashboard-header">
-                    <h1>Task Dashboard</h1>
-                    <a class="new-task-button" href="{{ url_for('new_task') }}">
-                        New Task
-                    </a>
+                    <div>
+                        <h1>Task Dashboard</h1>
+                        <p class="info-text">
+                            Logged in as {{ current_user.name }} ({{ current_user.role }})
+                        </p>
+                    </div>
+
+                    <div class="form-buttons">
+                        <a class="new-task-button" href="{{ url_for('new_task') }}">
+                            New Task
+                        </a>
+                        <a class="cancel-button" href="{{ url_for('logout') }}">
+                            Logout
+                        </a>
+                    </div>
                 </div>
                 {% if overdue_count > 0 %}
                 <div class="alert-banner">

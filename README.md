@@ -10,6 +10,7 @@ A web-based task management system built with Flask and MySQL that allows users 
 ## Features
 
 - Task dashboard with filtering by priority and status
+- User authentication (login/logout)
 - Role-based task visibility  
   - Regular users see only their assigned tasks  
   - Team leaders can view all team tasks  
@@ -53,8 +54,10 @@ pip install -r requirements.txt
 2. Start:
    - Apache
    - MySQL  
-3. Open phpMyAdmin in your browser:
+3. Open phpMyAdmin in your browser:  
    http://localhost/phpmyadmin
+
+---
 
 ### 3. Create the Database
 
@@ -70,6 +73,8 @@ USE task_monitoring_system;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) UNIQUE,
+    password VARCHAR(100),
     role ENUM('regular', 'team_leader') NOT NULL DEFAULT 'regular'
 );
 
@@ -88,11 +93,11 @@ CREATE TABLE tasks (
 (Optional sample data)
 
 ```sql
-INSERT INTO users (name, role) VALUES
-('Daniel', 'regular'),
-('Alex', 'regular'),
-('Chris', 'regular'),
-('Team Leader', 'team_leader');
+INSERT INTO users (name, username, password, role) VALUES
+('Daniel', 'daniel', 'password', 'regular'),
+('Alex', 'alex', 'password', 'regular'),
+('Chris', 'chris', 'password', 'regular'),
+('Team Leader', 'leader', 'password', 'team_leader');
 
 INSERT INTO tasks (title, description, due, priority, status, assigned_user_id) VALUES
 ('Write report', 'Finish the draft for the project report.', '2026-05-30', 'High', 'In Progress', 1),
@@ -100,14 +105,29 @@ INSERT INTO tasks (title, description, due, priority, status, assigned_user_id) 
 ('Code backend', 'Connect Flask routes to MySQL database.', '2026-05-13', 'High', 'Completed', 3);
 ```
 
+> Note: Passwords are stored in plain text for demonstration purposes only.
+
+---
+
 ### 4. Run the Application
 
 ```bash
 python app.py
 ```
 
+---
+
+### Demo Login Credentials
+
+Use the following accounts to log in:
+
+- Username: daniel | Password: password  
+- Username: alex | Password: password  
+- Username: chris | Password: password  
+- Username: leader | Password: password  
+
+---
+
 Then open your browser and go to:
 
 http://127.0.0.1:5050
-
-
